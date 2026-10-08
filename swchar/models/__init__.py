@@ -21,6 +21,16 @@ from swchar.models.edges import (
     get_edge,
 )
 from swchar.models.items import ItemCategory, CatalogItem, InventoryItem
+from swchar.models.arcana import (
+    ArcaneBackgroundType,
+    ArcaneBackgroundDefaults,
+    ARCANE_BACKGROUND_DEFAULTS,
+    get_arcane_background_defaults,
+    Power,
+    ArcaneConfiguration,
+    Arcana,
+    ArcaneBackground,
+)
 from swchar.models.character import Character
 
 __all__ = [
@@ -49,5 +59,13 @@ __all__ = [
     "ItemCategory",
     "CatalogItem",
     "InventoryItem",
+    "ArcaneBackgroundType",
+    "ArcaneBackgroundDefaults",
+    "ARCANE_BACKGROUND_DEFAULTS",
+    "get_arcane_background_defaults",
+    "Power",
+    "ArcaneConfiguration",
+    "Arcana",
+    "ArcaneBackground",
     "Character",
 ]

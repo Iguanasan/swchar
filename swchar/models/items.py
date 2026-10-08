@@ -55,7 +55,9 @@ class InventoryItem:
     catalog_item_id: int | None = None
     min_str: str | None = None
     damage: str | None = None
+    range: str | None = None
     armor_bonus: int = 0
+    parry_bonus: int = 0
     notes: str = ""
     custom_name: str = ""
 
@@ -101,7 +103,9 @@ class InventoryItem:
             character_id=character_id,
             min_str=catalog_item.min_str,
             damage=catalog_item.damage,
+            range=catalog_item.range,
             armor_bonus=catalog_item.armor_bonus,
+            parry_bonus=catalog_item.parry_bonus,
             notes=catalog_item.notes,
         )
 

@@ -10,6 +10,7 @@ from swchar.models.attributes import AttributeName, Attributes
 from swchar.models.edges import Rank
 from swchar.models.hindrances import HindranceEconomy
 from swchar.models.skills import Skill, CORE_SKILLS, get_core_skills
+from swchar.models.arcana import ArcaneConfiguration
 
 
 @dataclass
@@ -29,7 +30,7 @@ class Character:
     bennies: int | None = None
     cash: float = STARTING_CASH
     inventory: list[Any] = field(default_factory=list)
-    arcana: Any = None
+    arcana: ArcaneConfiguration | None = None
 
     def __post_init__(self) -> None:
         """Initialize bennies from ancestry and populate core skills at d4 if not present."""
