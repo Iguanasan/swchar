@@ -96,6 +96,9 @@ class HindranceEconomy:
         cash_bonuses: int = 0,
         total_points: int = 0,
         usable_points: int = 0,
+        total_earned: int | None = None,
+        spent_points: int | None = None,
+        remaining_points: int | None = None,
         **kwargs: Any,
     ) -> None:
         self.attribute_bonuses = attribute_bonuses or kwargs.get("attribute_bonus", 0)
@@ -103,9 +106,35 @@ class HindranceEconomy:
             edge_bonuses or kwargs.get("edge_bonus", 0) or kwargs.get("extra_edges", 0)
         )
         self.skill_bonuses = skill_bonuses or kwargs.get("skill_bonus", 0)
-        self.cash_bonuses = cash_bonuses or kwargs.get("cash_bonus", 0)
-        self.total_points = total_points
+        raw_cash = cash_bonuses or kwargs.get("cash_bonus", 0)
+        if raw_cash >= 500:
+            self.cash_bonuses = int(raw_cash // 500)
+        else:
+            self.cash_bonuses = int(raw_cash)
+        if total_earned is not None:
+            self.total_points = total_earned
+        else:
+            self.total_points = total_points or kwargs.get("total_earned", 0)
         self.usable_points = usable_points
+
+    @property
+    def total_earned(self) -> int:
+        """Alias for total_points."""
+        return self.total_points
+
+    @total_earned.setter
+    def total_earned(self, val: int) -> None:
+        self.total_points = val
+
+    @property
+    def remaining_points(self) -> int:
+        """Alias for points_remaining."""
+        return self.points_remaining
+
+    @property
+    def spent_points(self) -> int:
+        """Alias for points_spent."""
+        return self.points_spent
 
     @property
     def points_spent(self) -> int:

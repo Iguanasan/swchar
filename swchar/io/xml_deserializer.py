@@ -81,6 +81,8 @@ class CharacterXmlDeserializer:
         content = path.read_text(encoding="utf-8")
         return cls.from_xml_string(content)
 
+    from_xml_file = import_from_file
+
     @classmethod
     def _parse_identity(cls, root: ET.Element) -> Character:
         """Validate and parse the <Identity> block into a Character instance."""
@@ -233,10 +235,11 @@ class CharacterXmlDeserializer:
             rewards_elem = hindrances_elem.find("HindranceRewards")
             if rewards_elem is not None:
                 try:
-                    attr_b = int(rewards_elem.findtext("AttributePointsBonus") or "0")
-                    skill_b = int(rewards_elem.findtext("SkillPointsBonus") or "0")
-                    edge_b = int(rewards_elem.findtext("ExtraEdgesBonus") or "0")
-                    cash_b = int(rewards_elem.findtext("CashBonus") or "0")
+                    attr_b = int(float(rewards_elem.findtext("AttributePointsBonus") or "0"))
+                    skill_b = int(float(rewards_elem.findtext("SkillPointsBonus") or "0"))
+                    edge_b = int(float(rewards_elem.findtext("ExtraEdgesBonus") or "0"))
+                    raw_cash = float(rewards_elem.findtext("CashBonus") or "0")
+                    cash_b = int(raw_cash // 500) if raw_cash >= 500 else int(raw_cash)
                 except ValueError as err:
                     raise XmlValidationError(
                         f"Invalid numeric value in <HindranceRewards>: {err}"
@@ -289,9 +292,32 @@ class CharacterXmlDeserializer:
                         ptrap = (
                             p_elem.attrib.get("trappings")
                             or p_elem.attrib.get("trapping")
+                            or p_elem.findtext("Trappings")
                             or (p_elem.text or "")
                         )
-                        powers.append(Power(name=pname, trappings=ptrap.strip()))
+                        pp_str = (
+                            p_elem.attrib.get("power_points")
+                            or p_elem.attrib.get("powerpoints")
+                            or p_elem.findtext("PowerPoints")
+                            or "1"
+                        )
+                        try:
+                            pp_val = int(pp_str.strip())
+                        except ValueError:
+                            pp_val = 1
+                        dmg = p_elem.attrib.get("damage") or p_elem.findtext("Damage") or ""
+                        rng = p_elem.attrib.get("range") or p_elem.findtext("Range") or ""
+                        dur = p_elem.attrib.get("duration") or p_elem.findtext("Duration") or ""
+                        powers.append(
+                            Power(
+                                name=pname,
+                                power_points=pp_val,
+                                trappings=ptrap.strip(),
+                                damage=dmg,
+                                range=rng,
+                                duration=dur,
+                            )
+                        )
 
                 char.arcana = Arcana(
                     background=bg_name.strip(), power_points=pp, powers=powers

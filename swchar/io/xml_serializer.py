@@ -50,6 +50,7 @@ class CharacterXmlSerializer:
 
         ET.indent(root, space="  ")
         xml_body = ET.tostring(root, encoding="utf-8").decode("utf-8")
+        xml_body = xml_body.replace(" />", "/>")
         return f'<?xml version="1.0" encoding="utf-8"?>\n{xml_body}\n'
 
     @classmethod
@@ -253,7 +254,22 @@ class CharacterXmlSerializer:
             powers_elem = ET.SubElement(arcana_elem, "Powers")
             for p in getattr(arcana, "powers", []):
                 ptrap = getattr(p, "trappings", getattr(p, "trapping", ""))
-                ET.SubElement(powers_elem, "Power", name=p.name, trappings=ptrap)
+                p_attrs: dict[str, str] = {"name": p.name}
+                if ptrap:
+                    p_attrs["trappings"] = str(ptrap)
+                pp_val = getattr(p, "power_points", None)
+                if pp_val is not None:
+                    p_attrs["power_points"] = str(pp_val)
+                dmg = getattr(p, "damage", "")
+                if dmg:
+                    p_attrs["damage"] = str(dmg)
+                rng = getattr(p, "range", "")
+                if rng:
+                    p_attrs["range"] = str(rng)
+                dur = getattr(p, "duration", "")
+                if dur:
+                    p_attrs["duration"] = str(dur)
+                ET.SubElement(powers_elem, "Power", **p_attrs)
 
     @classmethod
     def _build_inventory(cls, root: ET.Element, character: Character) -> None:

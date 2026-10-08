@@ -45,7 +45,7 @@ class InventoryRepository:
             sql += " AND (LOWER(name) LIKE ? OR LOWER(COALESCE(notes, '')) LIKE ?)"
             params.extend([clean_query, clean_query])
 
-        sql += " ORDER BY category, name"
+        sql += " ORDER BY id"
         cursor = self.conn.execute(sql, params)
         rows = cursor.fetchall()
         return [
