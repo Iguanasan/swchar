@@ -7,6 +7,11 @@ from swchar.rules.derived_stats import (
 )
 from swchar.rules.point_tracker import PointTracker, HindranceEconomy
 from swchar.rules.prerequisites import PrerequisiteChecker
+from swchar.rules.encumbrance import (
+    EncumbranceCalculator,
+    EncumbranceResult,
+    MinStrResult,
+)
 
 __all__ = [
     "DerivedStatsCalculator",
@@ -15,4 +20,7 @@ __all__ = [
     "PointTracker",
     "HindranceEconomy",
     "PrerequisiteChecker",
+    "EncumbranceCalculator",
+    "EncumbranceResult",
+    "MinStrResult",
 ]

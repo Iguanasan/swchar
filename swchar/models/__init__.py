@@ -20,6 +20,7 @@ from swchar.models.edges import (
     EDGES,
     get_edge,
 )
+from swchar.models.items import ItemCategory, CatalogItem, InventoryItem
 from swchar.models.character import Character
 
 __all__ = [
@@ -45,5 +46,8 @@ __all__ = [
     "Edge",
     "EDGES",
     "get_edge",
+    "ItemCategory",
+    "CatalogItem",
+    "InventoryItem",
     "Character",
 ]
