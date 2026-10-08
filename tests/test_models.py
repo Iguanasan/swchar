@@ -178,11 +178,11 @@ def test_half_folk_ancestry_baseline():
 def test_rakashan_ancestry_baseline():
     """Verify Rakashan traits: pace 6, Agility bonus, bite/claws, low light vision."""
     rakashan = get_ancestry("Rakashan")
-    assert rakishan_pace := rakishan.pace == 6
-    assert rakishan.running_die == DieType.D6
-    assert rakishan.size == 0
-    assert AttributeName.AGILITY in rakishan.attribute_bonuses or "Agility" in rakishan.attribute_bonuses
-    trait_names = [t.name if hasattr(t, "name") else str(t) for t in rakishan.traits]
+    assert rakashan.pace == 6
+    assert rakashan.running_die == DieType.D6
+    assert rakashan.size == 0
+    assert AttributeName.AGILITY in rakashan.attribute_bonuses or "Agility" in rakashan.attribute_bonuses
+    trait_names = [t.name if hasattr(t, "name") else str(t) for t in rakashan.traits]
     assert any("Agile" in t for t in trait_names)
     assert any("Bite" in t or "Claw" in t for t in trait_names)
 

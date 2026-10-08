@@ -7,6 +7,8 @@ from swchar.core.constants import STARTING_CASH, BASE_BENNIES
 from swchar.core.dice import DieType
 from swchar.models.ancestry import Ancestry, get_ancestry
 from swchar.models.attributes import AttributeName, Attributes
+from swchar.models.edges import Rank
+from swchar.models.hindrances import HindranceEconomy
 from swchar.models.skills import Skill, CORE_SKILLS, get_core_skills
 
 
@@ -18,10 +20,12 @@ class Character:
     concept: str = ""
     ancestry: Ancestry = field(default_factory=lambda: get_ancestry("Human"))
     id: str = field(default_factory=lambda: str(uuid.uuid4()))
+    rank: Rank = Rank.NOVICE
     attributes: Attributes = field(default_factory=Attributes)
     skills: dict[str, Skill] = field(default_factory=dict)
     edges: list[str] = field(default_factory=list)
     hindrances: list[Any] = field(default_factory=list)
+    hindrance_rewards: Any = field(default_factory=HindranceEconomy)
     bennies: int | None = None
     cash: float = STARTING_CASH
     inventory: list[Any] = field(default_factory=list)

@@ -1,9 +1,18 @@
-"""Rules engine components for point tracking, derived stats, and validation."""
+"""Rules engine components for point tracking, derived stats, and prerequisite validation."""
 
-from swchar.rules.derived_stats import DerivedStatsCalculator, PaceResult, ToughnessResult
+from swchar.rules.derived_stats import (
+    DerivedStatsCalculator,
+    PaceResult,
+    ToughnessResult,
+)
+from swchar.rules.point_tracker import PointTracker, HindranceEconomy
+from swchar.rules.prerequisites import PrerequisiteChecker
 
 __all__ = [
     "DerivedStatsCalculator",
     "PaceResult",
     "ToughnessResult",
+    "PointTracker",
+    "HindranceEconomy",
+    "PrerequisiteChecker",
 ]

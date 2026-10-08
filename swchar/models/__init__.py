@@ -1,8 +1,25 @@
-"""Domain models representing character stats, ancestries, traits, and skills."""
+"""Domain models representing character stats, ancestries, traits, skills, hindrances, and edges."""
 
 from swchar.models.attributes import AttributeName, Attributes
 from swchar.models.ancestry import Ancestry, AncestryTrait, ANCESTRIES, get_ancestry
 from swchar.models.skills import Skill, CORE_SKILLS, get_core_skills
+from swchar.models.hindrances import (
+    HindranceSeverity,
+    HindranceRewardType,
+    HindranceRedemption,
+    Hindrance,
+    HindranceEconomy,
+    HINDRANCES,
+    get_hindrance,
+)
+from swchar.models.edges import (
+    Rank,
+    EdgeCategory,
+    EdgePrerequisite,
+    Edge,
+    EDGES,
+    get_edge,
+)
 from swchar.models.character import Character
 
 __all__ = [
@@ -15,5 +32,18 @@ __all__ = [
     "Skill",
     "CORE_SKILLS",
     "get_core_skills",
+    "HindranceSeverity",
+    "HindranceRewardType",
+    "HindranceRedemption",
+    "Hindrance",
+    "HindranceEconomy",
+    "HINDRANCES",
+    "get_hindrance",
+    "Rank",
+    "EdgeCategory",
+    "EdgePrerequisite",
+    "Edge",
+    "EDGES",
+    "get_edge",
     "Character",
 ]
