@@ -11,6 +11,13 @@ from swchar.ui.tabs.hindrances_edges_tab import HindrancesEdgesTab
 from swchar.ui.tabs.inventory_tab import InventoryTab
 from swchar.ui.tabs.summary_tab import SummaryTab
 from swchar.ui.tabs.traits_tab import TraitsTab
+from swchar.ui.theme import (
+    ThemeName,
+    apply_theme,
+    get_available_themes,
+    get_current_theme,
+    get_theme_palette,
+)
 
 if TYPE_CHECKING:
     from swchar.app import AppController, CharacterState
@@ -58,6 +65,15 @@ class MainWindow:
         catalog_menu = tk.Menu(menubar, tearoff=0)
         catalog_menu.add_command(label="Re-seed Default Catalog", command=self._menu_reseed_catalog)
         menubar.add_cascade(label="Catalog", menu=catalog_menu)
+
+        # Theme Menu
+        theme_menu = tk.Menu(menubar, tearoff=0)
+        for theme_choice in get_available_themes():
+            theme_menu.add_command(
+                label=theme_choice.value,
+                command=lambda t=theme_choice: self.set_theme(t),
+            )
+        menubar.add_cascade(label="Theme", menu=theme_menu)
 
         # Help Menu
         help_menu = tk.Menu(menubar, tearoff=0)
@@ -107,18 +123,28 @@ class MainWindow:
     def _on_state_change(self, event: str = "") -> None:
         self._update_status()
 
+    def set_theme(self, theme: ThemeName | str) -> None:
+        """Switch application theme dynamically.
+
+        Args:
+            theme: ThemeName enum or theme name string to activate.
+        """
+        apply_theme(self.root, theme)
+        self._update_status()
+
     def _update_status(self) -> None:
         char = self.state.character
         char_name = char.name or "Unnamed"
         ancestry = char.ancestry.name if char.ancestry else "Human"
         errors = self.state.validate_build()
+        palette = get_theme_palette(get_current_theme())
 
         if errors:
-            status = f"{char_name} ({ancestry}) | Validation: {len(errors)} issues pending"
-            self.status_label.configure(text=status, foreground="red")
+            status = f"[!] {char_name} ({ancestry}) | Validation: {len(errors)} issues pending"
+            self.status_label.configure(text=status, foreground=palette.danger)
         else:
-            status = f"{char_name} ({ancestry}) | Build Valid"
-            self.status_label.configure(text=status, foreground="green")
+            status = f"[VALID] {char_name} ({ancestry}) | Build Valid"
+            self.status_label.configure(text=status, foreground=palette.success)
 
     # --------------------------------------------------------------------------
     # Menu callbacks
